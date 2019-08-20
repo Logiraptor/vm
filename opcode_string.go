@@ -10,7 +10,7 @@ func _() {
 	var x [1]struct{}
 	_ = x[AddWord-0]
 	_ = x[Print-1]
-	_ = x[LoadWord-2]
+	_ = x[SetWord-2]
 	_ = x[Exit-3]
 	_ = x[Compare-4]
 	_ = x[BranchEqual-5]
@@ -18,7 +18,7 @@ func _() {
 }
 
 const (
-	_OpCode_name_0 = "AddWordPrintLoadWordExitCompareBranchEqual"
+	_OpCode_name_0 = "AddWordPrintSetWordExitCompareBranchEqual"
 	_OpCode_name_1 = "ExtendedInstruction"
 )
 

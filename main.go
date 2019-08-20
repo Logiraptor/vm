@@ -48,7 +48,7 @@ func (vm *VM) RunInstruction() {
 	case Print:
 		arg1 := vm.ReadRegister()
 		fmt.Println(*arg1)
-	case LoadWord:
+	case SetWord:
 		dest := vm.ReadRegister()
 		arg1 := vm.ReadWordLiteral()
 		*dest = arg1
@@ -81,7 +81,7 @@ func main() {
 	vm := CreateVM(10000, 10000)
 	vm.instructions = Memory{
 		// set b 1
-		Byte(LoadWord), Byte(BRegister), 1, 0, 0, 0, 0, 0, 0, 0,
+		Byte(SetWord), Byte(BRegister), 1, 0, 0, 0, 0, 0, 0, 0,
 
 		// loop:
 		// print a
@@ -95,7 +95,7 @@ func main() {
 		//   add e b c
 		//   add b a c
 		//   add a e c
-		Byte(LoadWord), Byte(CRegister), 0, 0, 0, 0, 0, 0, 0, 0,
+		Byte(SetWord), Byte(CRegister), 0, 0, 0, 0, 0, 0, 0, 0,
 		Byte(AddWord), Byte(ERegister), Byte(BRegister), Byte(CRegister),
 		Byte(AddWord), Byte(BRegister), Byte(ARegister), Byte(CRegister),
 		Byte(AddWord), Byte(ARegister), Byte(ERegister), Byte(CRegister),
@@ -103,13 +103,13 @@ func main() {
 		// cmp c a 100
 		//   set d 100
 		//   cmp c a d
-		Byte(LoadWord), Byte(DRegister), 100, 0, 0, 0, 0, 0, 0, 0,
+		Byte(SetWord), Byte(DRegister), 100, 0, 0, 0, 0, 0, 0, 0,
 		Byte(Compare), Byte(CRegister), Byte(ARegister), Byte(DRegister),
 
 		// beq c -1 loop
 		//   set d -1
 		//   beq c d loop
-		Byte(LoadWord), Byte(DRegister), 255, 255, 255, 255, 255, 255, 255, 255,
+		Byte(SetWord), Byte(DRegister), 255, 255, 255, 255, 255, 255, 255, 255,
 		Byte(BranchEqual), Byte(CRegister), Byte(DRegister), 10, 0, 0, 0, 0, 0, 0, 0,
 
 		// exit 0

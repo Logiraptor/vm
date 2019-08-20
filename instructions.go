@@ -10,8 +10,8 @@ const (
 	AddWord OpCode = iota
 	// Print | OPERAND
 	Print
-	// LoadWord | Destination | LiteralWord
-	LoadWord
+	// SetWord | Destination | LiteralWord
+	SetWord
 	// Terminate | ExitCode
 	Exit
 	// Compare | DESTINATION | OPERAND 1 | OPERAND 2
