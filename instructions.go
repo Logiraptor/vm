@@ -8,16 +8,20 @@ type OpCode Byte
 const (
 	// AddWord | DESTINATION | OPERAND 1 | OPERAND 2
 	AddWord OpCode = iota
-	// Print | OPERAND
-	Print
-	// SetWord | Destination | LiteralWord
-	SetWord
-	// Terminate | ExitCode
-	Exit
 	// Compare | DESTINATION | OPERAND 1 | OPERAND 2
 	Compare
+	// SetWord | Destination | LiteralWord
+	SetWord
 	// BranchEqual | OPERAND 1 | OPERAND 2 | LiteralWord
 	BranchEqual
+	// LoadWord | DESTINATION | OPERAND 1 (Address)
+	LoadWord
+	// StoreWord | DESTINATION (Address) | OPERAND 1 (Value)
+	StoreWord
+	// Print | OPERAND
+	Print
+	// Exit | ExitCode
+	Exit
 	ExtendedInstruction OpCode = 255
 )
 

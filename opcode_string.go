@@ -9,26 +9,28 @@ func _() {
 	// Re-run the stringer command to generate them again.
 	var x [1]struct{}
 	_ = x[AddWord-0]
-	_ = x[Print-1]
+	_ = x[Compare-1]
 	_ = x[SetWord-2]
-	_ = x[Exit-3]
-	_ = x[Compare-4]
-	_ = x[BranchEqual-5]
+	_ = x[BranchEqual-3]
+	_ = x[LoadWord-4]
+	_ = x[StoreWord-5]
+	_ = x[Print-6]
+	_ = x[Exit-7]
 	_ = x[ExtendedInstruction-255]
 }
 
 const (
-	_OpCode_name_0 = "AddWordPrintSetWordExitCompareBranchEqual"
+	_OpCode_name_0 = "AddWordCompareSetWordBranchEqualLoadWordStoreWordPrintExit"
 	_OpCode_name_1 = "ExtendedInstruction"
 )
 
 var (
-	_OpCode_index_0 = [...]uint8{0, 7, 12, 20, 24, 31, 42}
+	_OpCode_index_0 = [...]uint8{0, 7, 14, 21, 32, 40, 49, 54, 58}
 )
 
 func (i OpCode) String() string {
 	switch {
-	case 0 <= i && i <= 5:
+	case 0 <= i && i <= 7:
 		return _OpCode_name_0[_OpCode_index_0[i]:_OpCode_index_0[i+1]]
 	case i == 255:
 		return _OpCode_name_1

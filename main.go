@@ -24,15 +24,13 @@ type VM struct {
 	sp, ip           Word
 	a, b, c, d, e, f Word
 	instructions     Memory
-	stack            Memory
-	heap             Memory
+	data             Memory
 }
 
 func CreateVM(stackSize, heapSize Word) VM {
 	memory := AllocateMemory(stackSize + heapSize)
 	return VM{
-		stack: memory[:stackSize],
-		heap:  memory[stackSize:],
+		data: memory,
 	}
 }
 
@@ -74,6 +72,14 @@ func (vm *VM) RunInstruction() {
 		if *arg1 == *arg2 {
 			vm.ip = newIP
 		}
+	case LoadWord:
+		dest := vm.ReadRegister()
+		arg1 := vm.ReadRegister()
+		*dest = vm.data.ReadWord(*arg1)
+	case StoreWord:
+		dest := vm.ReadRegister()
+		arg1 := vm.ReadRegister()
+		vm.data.WriteWord(*dest, *arg1)
 	}
 }
 
@@ -92,13 +98,15 @@ func main() {
 
 		// swp a b
 		//   set c 0
-		//   add e b c
+		//   set e 0
+		//   store e b
 		//   add b a c
-		//   add a e c
+		//   load e a
 		Byte(SetWord), Byte(CRegister), 0, 0, 0, 0, 0, 0, 0, 0,
-		Byte(AddWord), Byte(ERegister), Byte(BRegister), Byte(CRegister),
+		Byte(SetWord), Byte(ERegister), 0, 0, 0, 0, 0, 0, 0, 0,
+		Byte(StoreWord), Byte(ERegister), Byte(BRegister),
 		Byte(AddWord), Byte(BRegister), Byte(ARegister), Byte(CRegister),
-		Byte(AddWord), Byte(ARegister), Byte(ERegister), Byte(CRegister),
+		Byte(LoadWord), Byte(ARegister), Byte(ERegister),
 
 		// cmp c a 100
 		//   set d 100
