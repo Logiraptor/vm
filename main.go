@@ -7,7 +7,7 @@ import (
 
 func main() {
 	machine := core.CreateVM(0, 8)
-	machine.Instructions = codegen.CodeGen([]codegen.CodeGenPassInstruction{
+	machine.Instructions = codegen.CodeGen([]codegen.Instruction{
 		// set b 1
 		codegen.SetWordInstruction{Destination: core.BRegister, Operand1: 1},
 

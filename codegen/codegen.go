@@ -7,12 +7,12 @@ import (
 	"vm/debug"
 )
 
-type CodeGenPassInstruction interface {
+type Instruction interface {
 	isCodeGenPassInstruction()
 }
 
 type ArithmeticInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	OpCode      core.OpCode
 	Destination core.Register
 	Operand1    core.Register
@@ -20,37 +20,37 @@ type ArithmeticInstruction struct {
 }
 
 type SetWordInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	Destination core.Register
 	Operand1    core.Word
 }
 
 type BranchEqualInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	Operand1     core.Register
 	Operand2     core.Register
 	BranchTarget core.Word
 }
 
 type LoadWordInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	Destination core.Register
 	Address     core.Register
 }
 
 type StoreWordInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	Address  core.Register
 	Operand1 core.Register
 }
 
 type PrintInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	Operand1 core.Register
 }
 
 type ExitInstruction struct {
-	CodeGenPassInstruction
+	Instruction
 	Operand1 core.Byte
 }
 
@@ -64,7 +64,7 @@ func wordToMem(word core.Word) core.Memory {
 	return mem
 }
 
-func CodeGen(instructions []CodeGenPassInstruction) core.Memory {
+func CodeGen(instructions []Instruction) core.Memory {
 	type branchOffset struct{ branch, instruction int }
 	var output core.Memory
 	var instructionOffsets []int
