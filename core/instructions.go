@@ -1,6 +1,9 @@
-package main
+package core
 
-import "fmt"
+import (
+	"fmt"
+	"vm/debug"
+)
 
 //go:generate stringer -type=OpCode
 type OpCode Byte
@@ -40,16 +43,16 @@ const (
 )
 
 func (vm *VM) ReadOpCode() OpCode {
-	opCode := OpCode(vm.instructions[vm.ip])
+	opCode := OpCode(vm.Instructions[vm.ip])
 	vm.ip++
-	Debugln("ReadOpCode", opCode)
+	debug.Debugln("ReadOpCode", opCode)
 	return opCode
 }
 
 func (vm *VM) ReadRegister() *Word {
-	register := Register(vm.instructions[vm.ip])
+	register := Register(vm.Instructions[vm.ip])
 	vm.ip++
-	Debugln("ReadRegister", register)
+	debug.Debugln("ReadRegister", register)
 	switch register {
 	case SPRegister:
 		return &vm.sp
@@ -71,10 +74,9 @@ func (vm *VM) ReadRegister() *Word {
 	panic(fmt.Sprintf("InvalidRegister: %d", register))
 }
 
-
 func (vm *VM) ReadWordLiteral() Word {
-	val := vm.instructions.ReadWord(vm.ip)
+	val := vm.Instructions.ReadWord(vm.ip)
 	vm.ip += WordSize
-	Debugln("ReadWordLiteral", val)
+	debug.Debugln("ReadWordLiteral", val)
 	return val
 }
