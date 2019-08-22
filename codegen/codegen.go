@@ -7,6 +7,7 @@ import (
 	"vm/debug"
 )
 
+//go:generate dsl_generator -type Instruction
 type Instruction interface {
 	isCodeGenPassInstruction()
 }

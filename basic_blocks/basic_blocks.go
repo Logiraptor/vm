@@ -7,6 +7,7 @@ import (
 	"vm/core"
 )
 
+//go:generate dsl_generator -type Instruction
 type Instruction interface {
 	isBasicBlockPassInstruction()
 }
