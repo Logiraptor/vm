@@ -32,14 +32,14 @@ const (
 type Register Byte
 
 const (
-	IPRegister Register = iota
-	SPRegister
-	ARegister
-	BRegister
-	CRegister
-	DRegister
-	ERegister
-	FRegister
+	IP Register = iota
+	SP
+	A
+	B
+	C
+	D
+	E
+	F
 )
 
 func (vm *VM) ReadOpCode() OpCode {
@@ -54,21 +54,21 @@ func (vm *VM) ReadRegister() *Word {
 	vm.ip++
 	debug.Debugln("ReadRegister", register)
 	switch register {
-	case SPRegister:
+	case SP:
 		return &vm.sp
-	case IPRegister:
+	case IP:
 		return &vm.ip
-	case ARegister:
+	case A:
 		return &vm.a
-	case BRegister:
+	case B:
 		return &vm.b
-	case CRegister:
+	case C:
 		return &vm.c
-	case DRegister:
+	case D:
 		return &vm.d
-	case ERegister:
+	case E:
 		return &vm.e
-	case FRegister:
+	case F:
 		return &vm.f
 	}
 	panic(fmt.Sprintf("InvalidRegister: %d", register))

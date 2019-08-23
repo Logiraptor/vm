@@ -56,8 +56,8 @@ type ExitInstruction struct {
 }
 
 type BasicBlock struct {
-	id           string
-	Instructions []Instruction
+	id string
+	InstructionBuilder
 }
 
 var basicBlockIndex = 0

@@ -8,49 +8,35 @@ import (
 
 func main() {
 	bb1 := basic_blocks.NewBasicBlock("main")
-	bb1.Instructions = []basic_blocks.Instruction{
-		// set b 1
-		basic_blocks.SetWordInstruction{Destination: core.BRegister, Operand1: 1},
-	}
-	bb2 := basic_blocks.NewBasicBlock("loop")
-	loopBuilder := basic_blocks.InstructionBuilder{}
-	// loop:
-	// print a
-	loopBuilder.Print(core.ARegister)
+	bb1.SetWord(core.B, 1)
 
-	// add a a b
-	loopBuilder.Arithmetic(core.AddWord, core.ARegister, core.ARegister, core.BRegister)
+	bb2 := basic_blocks.NewBasicBlock("loop")
+	bb2.Print(core.A)
+
+	bb2.Arithmetic(core.AddWord, core.A, core.A, core.B)
 
 	// swp a b
-	//   set c 0
-	//   set e 0
-	//   store e b
-	//   add b a c
-	//   load e a
-	loopBuilder.SetWord(core.CRegister, 0)
-	loopBuilder.SetWord(core.ERegister, 0)
-	loopBuilder.StoreWord(core.ERegister, core.BRegister)
-	loopBuilder.Arithmetic(core.AddWord, core.BRegister, core.ARegister, core.CRegister)
-	loopBuilder.LoadWord(core.ARegister, core.ERegister)
+	bb2.SetWord(core.C, 0)
+	bb2.SetWord(core.E, 0)
+	bb2.StoreWord(core.E, core.B)
+	bb2.Arithmetic(core.AddWord, core.B, core.A, core.C)
+	bb2.LoadWord(core.A, core.E)
 
 	// cmp c a 100
-	//   set d 100
-	//   cmp c a d
-	loopBuilder.SetWord(core.DRegister, 100)
-	loopBuilder.Arithmetic(core.Compare, core.CRegister, core.ARegister, core.DRegister)
+	bb2.SetWord(core.D, 100)
+	bb2.Arithmetic(core.Compare, core.C, core.A, core.D)
 
 	// beq c -1 loop
-	//   set d -1
-	//   beq c d loop
-	loopBuilder.SetWord(core.DRegister, -1)
-	loopBuilder.BranchEqual(core.CRegister, core.DRegister, bb2)
+	bb2.SetWord(core.D, -1)
+	bb2.BranchEqual(core.C, core.D, bb2)
 
+	bb3 := basic_blocks.NewBasicBlock("end")
 	// exit 0
-	loopBuilder.Exit(0)
-	bb2.Instructions = loopBuilder.Instructions
+	bb3.Exit(0)
+
 	machine := core.CreateVM(0, 8)
 	machine.Instructions = codegen.CodeGen(basic_blocks.ResolveLabels([]*basic_blocks.BasicBlock{
-		bb1, bb2,
+		bb1, bb2, bb3,
 	}))
 
 	for {
